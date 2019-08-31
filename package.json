@@ -1,0 +1,76 @@
+{
+	"name": "codemap_plugin",
+	"displayName": "CodeMap Plugin",
+	"description": "",
+	"version": "0.0.1",
+	"publisher": "Zicheng",
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"configuration": {
+            "type": "object",
+            "title": "CodeMap Plugin",
+            "properties": {
+                "CodeMapPlugin.HoverProvider": {
+                    "type": "string",
+                    "default": "",
+                    "description": "HoverProvider: Copy file path here"
+                }
+            }
+        },
+		"commands": [
+			{
+				"command": "extension.openTheFile",
+				"title": "Open Target File"
+			}
+		],
+		"keybindings": [
+			{
+			"command": "extension.openTheFile",
+			"key": "ctrl+i",
+			"mac": "cmd+i",
+			"when": "editorFocus || editorIsOpen || editorReadOnly"
+			}
+		],
+		"menus": {
+            "editor/context": [
+                {
+                    "command": "extension.openTheFile",
+                    "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extension.openTheFile",
+                    "group": "navigation"
+                }
+            ]
+        }
+	},
+	"scripts": {
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"vscode": "^1.1.28",
+		"eslint": "^5.13.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"vscode-test": "^1.0.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ZichengQu/CodeMap_Plugin.git"
+    	}
+}
