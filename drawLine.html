@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		
+		<link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="lib/css/bootstrap-treeview.min.css" />
+		<link rel="stylesheet" type="text/css" href="lib/css/jsplumb.css" />
+		<title>Point to point</title>
+		<style>
+			#diagramContainer {
+				padding: 20px;
+				width: 80%;
+				height: 400px;
+				border: 1px solid gray;
+				border: none;
+			}
+			
+			.item {
+				position: absolute;
+				height: 80px;
+				width: 80px;
+				border: 1px solid blue;
+				border: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<button onclick="add()">Add</button>
+		<button onclick="del()">Delete</button>
+		<div id="diagramContainer">
+			<!--<div id="item_left" class="item">item_left</div>
+			<div id="item_right" class="item" style="left:150px;">item_right</div>-->
+			<div id="item_first" class="item">item_first</div>
+		</div>
+
+		<script src="lib/js/jquery.js"></script>
+		<script src="lib/js/jquery-ui.js"></script>
+		<script src="lib/js/jsplumb.js"></script>
+
+		<script>
+			var index = 0;
+
+			function add() {
+				//Create child div in 'diagramContainer'
+				var parentDiv = document.getElementById("diagramContainer");
+				var childDiv = document.createElement("div");
+				var text = document.createTextNode("Div: " + index);
+				childDiv.appendChild(text);
+				parentDiv.appendChild(childDiv);
+				//Set attr for child div
+				$(childDiv).attr('id', index++);
+				$(childDiv).attr("class", "item");
+				//Framework jsPlumb
+				jsPlumb.ready(function() {
+					jsPlumb.setContainer('diagramContainer')
+					var common = {
+							isSource: true, //
+							isTarget: true,
+							connector: ['Bezier'],
+							maxConnections: -1, //multiple connections: -1
+						}
+						//Add point for div via jsPlumb and set uuid
+					jsPlumb.addEndpoint($(childDiv).attr("id"), {
+						anchors: ['Left'],
+						uuid: $(childDiv).attr("id")
+					}, common)
+					if ($(childDiv).attr("id") == 0) {
+						jsPlumb.addEndpoint('item_first', {
+							anchor: 'Left',
+							uuid: 'firstId'
+						}, common)
+						jsPlumb.connect({
+							uuids: ['firstId', $(childDiv).attr("id")],
+							overlays: [
+								['Arrow', {
+									width: 12,
+									length: 12,
+									location: 0.5
+								}]
+							]
+						})
+					} else {
+						jsPlumb.connect({
+							uuids: [$(childDiv).attr("id") - 1, $(childDiv).attr("id")],
+							overlays: [
+								['Arrow', {
+									width: 12,
+									length: 12,
+									location: 0.5
+								}]
+							]
+						})
+					}
+					jsPlumb.draggable($(childDiv).attr("id"))
+					jsPlumb.draggable('item_middle')
+					console.log("The new div id: " + $(childDiv).attr("id"));
+				})
+			}
+
+			function del() {
+				var indexDel = 0;
+				var reg = /^[0-9]+.?[0-9]*$/;
+				var divArr = $('#diagramContainer div');
+				var childDiv = [];
+				$.each(divArr, function(i, n) {
+					if (reg.test(divArr.get(i).id)) {
+						childDiv[indexDel++] = divArr.get(i);
+					}
+				});
+				if (childDiv.length < 1) {
+					alert("No child div can be removed! Please add one in advance!")
+				} else {
+					jsPlumb.ready(function() {
+						jsPlumb.setContainer('diagramContainer')
+						jsPlumb.remove(childDiv.length - 1 + "");
+						index--;
+					})
+				}
+			}
+			/* global jsPlumb */
+			jsPlumb.ready(function() {
+				jsPlumb.setContainer('diagramContainer')
+				var common = {
+						isSource: true,
+						isTarget: true,
+						connector: ['Bezier'],
+						maxConnections: -1,
+					}
+					/*jsPlumb.connect({
+						source: 'item_left',
+						target: 'item_right',
+						overlays: [
+							['Arrow', {
+								width: 12,
+								length: 12,
+								location: 0.5
+							}]
+						]
+					}, common)
+				jsPlumb.addEndpoint('item_left', {
+					anchors: ['Left'],
+					uuid: 'fromId'
+				}, common)
+				jsPlumb.addEndpoint('item_right', {
+					anchor: 'Left',
+					uuid: 'toId'
+				}, common)
+				jsPlumb.addEndpoint('item_middle', {
+					anchor: 'Left',
+					uuid: 'midId'
+				}, common)
+				jsPlumb.importDefaults({
+					//ConnectionsDetachable: false
+				})
+				setTimeout(function() {
+					jsPlumb.connect({
+						uuids: ['fromId', 'toId'],
+						overlays: [
+							['Arrow', {
+								width: 12,
+								length: 12,
+								location: 0.5
+							}]
+						]
+					})
+					jsPlumb.connect({
+						uuids: ['toId', 'midId'],
+						overlays: [
+							['Arrow', {
+								width: 12,
+								length: 12,
+								location: 0.5
+							}]
+						]
+					})
+				}, 500)
+				jsPlumb.draggable('item_left')
+				jsPlumb.draggable('item_right')
+				
+				jsPlumb.bind('click', function(conn, originalEvent) {
+					if (window.prompt('Confirm delete this line？Please input number 1') === '1') {
+						jsPlumb.deleteConnection(conn)
+					}
+				})*/
+				jsPlumb.addEndpoint('item_first', {
+					anchor: 'Left',
+					uuid: 'firstId'
+				}, common)
+				jsPlumb.draggable('item_first')
+			})
+		</script>
+	</body>
+
+</html>
