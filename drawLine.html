@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +17,6 @@
 				border: 1px solid gray;
 				border: none;
 			}
-			
 			.item {
 				position: absolute;
 				height: 80px;
@@ -28,13 +26,10 @@
 			}
 		</style>
 	</head>
-
 	<body>
 		<button onclick="add()">Add</button>
 		<button onclick="del()">Delete</button>
 		<div id="diagramContainer">
-			<!--<div id="item_left" class="item">item_left</div>
-			<div id="item_right" class="item" style="left:150px;">item_right</div>-->
 			<div id="item_first" class="item">item_first</div>
 		</div>
 
@@ -131,62 +126,6 @@
 						connector: ['Bezier'],
 						maxConnections: -1,
 					}
-					/*jsPlumb.connect({
-						source: 'item_left',
-						target: 'item_right',
-						overlays: [
-							['Arrow', {
-								width: 12,
-								length: 12,
-								location: 0.5
-							}]
-						]
-					}, common)
-				jsPlumb.addEndpoint('item_left', {
-					anchors: ['Left'],
-					uuid: 'fromId'
-				}, common)
-				jsPlumb.addEndpoint('item_right', {
-					anchor: 'Left',
-					uuid: 'toId'
-				}, common)
-				jsPlumb.addEndpoint('item_middle', {
-					anchor: 'Left',
-					uuid: 'midId'
-				}, common)
-				jsPlumb.importDefaults({
-					//ConnectionsDetachable: false
-				})
-				setTimeout(function() {
-					jsPlumb.connect({
-						uuids: ['fromId', 'toId'],
-						overlays: [
-							['Arrow', {
-								width: 12,
-								length: 12,
-								location: 0.5
-							}]
-						]
-					})
-					jsPlumb.connect({
-						uuids: ['toId', 'midId'],
-						overlays: [
-							['Arrow', {
-								width: 12,
-								length: 12,
-								location: 0.5
-							}]
-						]
-					})
-				}, 500)
-				jsPlumb.draggable('item_left')
-				jsPlumb.draggable('item_right')
-				
-				jsPlumb.bind('click', function(conn, originalEvent) {
-					if (window.prompt('Confirm delete this line？Please input number 1') === '1') {
-						jsPlumb.deleteConnection(conn)
-					}
-				})*/
 				jsPlumb.addEndpoint('item_first', {
 					anchor: 'Left',
 					uuid: 'firstId'
@@ -195,5 +134,4 @@
 			})
 		</script>
 	</body>
-
 </html>
