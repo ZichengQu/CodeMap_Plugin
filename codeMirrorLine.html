@@ -1,0 +1,130 @@
+<!DOCTYPE html> 
+<head> 
+  <meta charset=utf-8> 
+  <title>Draw Line</title>
+  <script src="lib/js/jquery.js"></script>
+
+  <!-- Import CodeMirror core files -->
+  <link href="codemirror/lib/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="codemirror/theme/monokai.css" rel="stylesheet" type="text/css">
+  <link href="codemirror/addon/display/fullscreen.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="codemirror/lib/codemirror.js"></script>
+
+  <!-- CodeMirror supports different languages，should import the relevant js files -->
+  <!-- htmlmixed relays on the Javascript、XML、CSS，so all should be imported. click.js supports c++ -->
+  <script type="text/javascript" src="codemirror/mode/javascript/javascript.js"></script>
+  <script type="text/javascript" src="codemirror/mode/xml/xml.js"></script>
+  <script type="text/javascript" src="codemirror/mode/css/css.js"></script>
+  <script type="text/javascript" src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+  <script type="text/javascript" src="codemirror/mode/clike/clike.js"></script>
+
+  <!-- others for CodeMirror -->
+  <script type="text/javascript" src="codemirror/addon/selection/active-line.js"></script>
+  <script type="text/javascript" src="codemirror/addon/edit/matchbrackets.js"></script>
+  <script type="text/javascript" src="codemirror/addon/display/fullscreen.js"></script>
+
+  <style type="text/css">
+      #Sketchpad{
+          border: 1px solid #d3d3d3;
+          position: absolute;
+          top: 0;
+      }
+  </style>
+  
+</head>
+<body>
+
+    <form action="mirror.html" method="get">
+        <textarea id="code" name="code">
+    #include <iostream>
+    using namespace std;
+    int main() 
+    {
+        cout << "Hello, World!";
+        return 0;
+    }
+        </textarea>
+    </form> 
+
+<canvas id="Sketchpad" width="1000" height="800" ></canvas>
+
+<script type="text/javascript">
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,     // show line sequence
+        indentUnit: 4,         // indent
+        styleActiveLine: true, // active the line when selecting
+        matchBrackets: true,   // match the brackets
+        mode: 'text/x-c++src', // c++, import the click.js to support c++ display.
+        lineWrapping: true,    // warp automatically
+        theme: 'default',      // theme
+        readOnly: true,        //readOnly?
+        showCursorWhenSelecting:false,//whether to show cursor when selecting
+        autofocus: false,//whether focus when initialize
+    });
+    editor.setOption("extraKeys", {
+        // Tab equals to 4 spaces
+        Tab: function(cm) {
+            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+        },
+        // F11 --> fullScreen
+        "F11": function(cm) {
+            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        },
+        // Esc to exit the full screen mode
+        "Esc": function(cm) {
+            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        }
+    });
+
+    var canvas = document.getElementById("Sketchpad");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(60,15);
+    ctx.lineTo(50,15);
+    ctx.lineTo(50,95);
+    ctx.lineTo(80,95);
+    ctx.strokeStyle="red";
+    ctx.stroke();
+
+    $("#Sketchpad").mousedown(function (e) {
+        console.log($("#Sketchpad"));
+        var line = canvas.getContext("2d");
+        line.lineWidth = 1;//the width of the line
+        line.strokeStyle = "red";//the color of the line
+
+        var startXPos = e.pageX - this.offsetLeft;
+        var startYPos = e.pageY - this.offsetTop;
+        //line.moveTo(startXPos,startYPos);
+        var endXPos = this.offsetLeft;
+        var endYPos = this.offsetTop;
+        //line.lineTo(endXPos,endYPos);
+        line.lineTo(startXPos, startYPos);
+        line.stroke();
+
+    });
+
+//   $("#Sketchpad").mousedown(function (e) {
+//     var circle = canvas.getContext("2d");
+//     circle.strokeStyle = "red";
+//     circle.fillStyle = "white";
+//     console.log(circle);
+//     var startXPos = e.pageX - this.offsetLeft;
+//     var startYPos = e.pageY - this.offsetTop;
+
+//     circle.beginPath();
+
+//     circle.arc(startXPos, startYPos, 5, 0, Math.PI*2, true);
+//     circle.closePath();
+//     circle.fill();
+//     circle.stroke();
+//   });
+</script>
+
+</body> 
+</html> 
