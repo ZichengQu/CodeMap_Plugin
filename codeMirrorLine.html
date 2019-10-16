@@ -86,9 +86,10 @@
     var ctx = canvas.getContext("2d");
     ctx.beginPath();
     ctx.moveTo(60,15);
-    ctx.lineTo(50,15);
-    ctx.lineTo(50,95);
-    ctx.lineTo(80,95);
+    ctx.quadraticCurveTo(30,55,85,95);
+    // ctx.lineTo(50,15);
+    // ctx.lineTo(50,95);
+    // ctx.lineTo(80,95);
     ctx.strokeStyle="red";
     ctx.stroke();
 
@@ -104,7 +105,25 @@
         var endXPos = this.offsetLeft;
         var endYPos = this.offsetTop;
         //line.lineTo(endXPos,endYPos);
-        line.lineTo(startXPos, startYPos);
+        //line.lineTo(startXPos, startYPos);
+        //line.moveTo(startXPos,startYPos);
+
+        var PI = Math.PI;
+        var angle = 60;
+        var xAngle = Math.atan2((startYPos/2-endYPos/2), (startXPos/2-endXPos/2));
+        xAngle = 360*xAngle/(2*PI);
+        var L = Math.sqrt((startYPos-endYPos)*(startYPos-endYPos)+(startXPos/2-endXPos/2)*(startXPos/2-endXPos/2));
+        var L2 = L/2 / Math.cos(angle* 2*PI/360);
+        CPX1 = startYPos+Math.round(L2 * Math.cos((xAngle+angle)* 2*PI/360));
+        CPY1 = endYPos+Math.round(L2 * Math.sin((xAngle+angle)* 2*PI/360));
+        // CPX2 = startYPos+Math.round(L2 * Math.cos((xAngle-angle)* 2*PI/360));
+        // CPY2 = endYPos+Math.round(L2 * Math.sin((xAngle-angle)* 2*PI/360));
+        // console.log("startXPos: "+startXPos+", startYPos: "+startYPos);
+        // console.log("endXPos: "+endXPos+", startYPos: "+startYPos);
+        // console.log("CPX1: "+CPX1+", CPY1: "+CPY1);
+        // console.log("CPX2: "+CPX2+", CPY2: "+CPY2);
+
+        line.quadraticCurveTo(CPX1,CPY1,startXPos,startYPos);
         line.stroke();
 
     });
