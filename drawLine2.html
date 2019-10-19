@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Document</title>
+        <script src="lib/js/jquery.js"></script>
+
+        <link rel="stylesheet" href="lib/highlight/styles/default.css">
+        <script src="lib/highlight/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        
+        <style type="text/css">
+            #Sketchpad{
+                border: 0px solid #d3d3d3;
+                position: absolute;
+                top: 30px;
+            }
+            #code{
+                position: absolute;
+                left:20px;
+            }
+        </style>
+
+        <script>
+                $(function(){
+                    $("#getContent").click();
+                    canvasInit();
+                    $("#code").width = window.width;
+                });
+
+                function getContent(){
+                    $.ajax({
+                        url:"http://localhost:3000/getContent",
+                        data:"qqq="+"qqq",
+                        dataType:"text",
+                        type:"post",
+                        success:function(data){
+                            var content = data;
+                            $('pre code').text(content+"\r\n \r\n \r\n                                                                                                                               ");
+                            $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+                            hljs.initHighlighting();
+                        }
+                    });
+                }
+                
+                function canvasInit(){
+                    var canvas = document.getElementById("Sketchpad");
+            
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+            
+                    var ctx = canvas.getContext("2d");
+                    ctx.beginPath();
+                    ctx.moveTo(60,15);
+                    ctx.quadraticCurveTo(30,55,85,95);
+                    ctx.strokeStyle="red";
+                    ctx.stroke();
+            
+                    $("#Sketchpad").mousedown(function (e) {
+                        
+                        console.log($("#Sketchpad"));
+                        var line = canvas.getContext("2d");
+                        line.lineWidth = 1;//the width of the line
+                        line.strokeStyle = "red";//the color of the line
+            
+                        var startXPos = e.pageX - this.offsetLeft;
+                        var startYPos = e.pageY - this.offsetTop;
+                        var endXPos = this.offsetLeft;
+                        var endYPos = this.offsetTop;
+            
+                        var PI = Math.PI;
+                        var angle = 60;
+                        var xAngle = Math.atan2((startYPos/2-endYPos/2), (startXPos/2-endXPos/2));
+                        xAngle = 360*xAngle/(2*PI);
+                        var L = Math.sqrt((startYPos-endYPos)*(startYPos-endYPos)+(startXPos/2-endXPos/2)*(startXPos/2-endXPos/2));
+                        var L2 = L/2 / Math.cos(angle* 2*PI/360);
+                        CPX1 = startYPos+Math.round(L2 * Math.cos((xAngle+angle)* 2*PI/360));
+                        CPY1 = endYPos+Math.round(L2 * Math.sin((xAngle+angle)* 2*PI/360));
+            
+                        line.quadraticCurveTo(CPX1,CPY1,startXPos,startYPos);
+                        line.stroke();
+            
+                    });
+                }
+            
+            </script>
+	</head>
+	<body>
+            <input type="button" id="getContent" style="display: none" onclick="getContent();">
+
+            <pre id="code"><code></code></pre>
+        
+            <canvas id="Sketchpad"></canvas>
+	</body>
+</html>
