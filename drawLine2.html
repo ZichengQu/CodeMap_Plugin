@@ -23,7 +23,6 @@
         <script>
                 $(function(){
                     $("#getContent").click();
-                    canvasInit();
                     $("#code").width = window.width;
                 });
 
@@ -38,20 +37,21 @@
                             $('pre code').text(content+"\r\n \r\n \r\n                                                                                                                               ");
                             $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
                             hljs.initHighlighting();
+
+                            canvasInit();
                         }
                     });
                 }
                 
                 function canvasInit(){
                     var canvas = document.getElementById("Sketchpad");
-            
                     canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
+                    canvas.height = $("#code")[0].offsetHeight;
             
                     var ctx = canvas.getContext("2d");
                     ctx.beginPath();
-                    ctx.moveTo(40,36);
-                    ctx.quadraticCurveTo(0,255,78,545);
+                    ctx.moveTo(70,55);
+                    ctx.quadraticCurveTo(0,1250,80,2585);
                     ctx.strokeStyle="red";
                     ctx.stroke();
             
