@@ -10,7 +10,7 @@ module.exports = function(context) {
     //path = path.split("/.local")[0]+'/WORKSPACE/bullet-2.81-rev2613-code-map-test/.vscode/contralmarks.json';//This is the absolute path of 'contralmarks.json' file.
     var vsrootPath = vscode.workspace.rootPath;
     var vscodefile = path.join(vsrootPath,".vscode");
-    var markPath = path.join(vscodefile,"contralmarks.json");
+    var markPath = path.join(vscodefile,"jumpmarks.json");
     let onChange = vscode.workspace.onDidChangeTextDocument((e) => {//Listen for any changes in any opened file
       //console.log("onDidChangeTextDocument executed!!!");
       
