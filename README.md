@@ -7,3 +7,6 @@ When the 'contralmarks.json' file is closed, the change listening will not work,
 
 2.Hover Provider.<br/>
 Set provider file in Setting>>Extension in advance.
+
+3.Draw Line.<br/>
+Should use "npm install express" and "npm install open" firstly, and then "node drawLine" to run the drawLine.js in the environment of Node.js
