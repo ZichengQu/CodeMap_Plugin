@@ -27,23 +27,27 @@
                 });
 
                 function getContent(){
+                    var pageURL = document.URL;
+                    var fileName = pageURL.split("mapKey=")[1];
                     $.ajax({
                         url:"http://localhost:3000/getContent",
-                        data:"qqq="+"qqq",
-                        dataType:"text",
+                        data:"fileName="+fileName,
+                        dataType:"json",
                         type:"post",
                         success:function(data){
-                            var content = data;
+                            var content = data[0].content;
                             $('pre code').text(content+"\r\n \r\n \r\n                                                                                                                               ");
                             $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
                             hljs.initHighlighting();
 
-                            canvasInit();
+                            canvasInit(data);
                         }
                     });
                 }
                 
-                function canvasInit(){
+                function canvasInit(data){
+                    console.log(data);
+                    
                     var canvas = document.getElementById("Sketchpad");
                     canvas.width = window.innerWidth;
                     canvas.height = $("#code")[0].offsetHeight;

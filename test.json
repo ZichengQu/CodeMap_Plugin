@@ -1,0 +1,23 @@
+{
+    "DrawLines": [
+        {
+            "ID": 0,
+            "FilePath": "/home/zichengqu/Desktop/test.c",
+            "Lines": [
+                {"row": 12, "colum": 4},
+                {"row": 34, "colum": 7},
+                {"row": 51, "colum": 0}
+            ]
+        },
+        {
+            "ID": 1,
+            "FilePath": "/home/zichengqu/Desktop/test2.c",
+            "Lines": [
+                {"row": 45, "colum": 9},
+                {"row": 96, "colum": 2},
+                {"row": 172, "colum": 18},
+                {"row": 172, "colum": 27}
+            ]
+        }
+    ]
+}
