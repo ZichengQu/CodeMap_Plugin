@@ -46,6 +46,10 @@
                 }
                 
                 function canvasInit(data){
+                    console.log(data);
+                    var rowHeight = $(".hljs-keyword:first").height();
+                    var colWidth = $(".hljs-keyword:first").width()/$(".hljs-keyword:first")[0].innerText.length;
+                    var initSpace = 6 * colWidth;
 
                     var canvas = document.getElementById("Sketchpad");
                     canvas.width = window.innerWidth;
@@ -61,8 +65,8 @@
                     for(var i=1;i<data.length;i++){
                         var row = data[i].row;
                         var col = data[i].column;
-                        var pageRow = row*15-5;
-                        var pageCol = 40+col*8;
+                        var pageRow = row * rowHeight - (1/3)*rowHeight;
+                        var pageCol = initSpace + col * colWidth;
                         
                         console.log("Row = "+row+", Col = "+col);
                         if(row==-1){
@@ -75,8 +79,8 @@
                             line.moveTo(pageCol,pageRow);
                             isFirst = false;
                         }else{
-                            var preRow = data[i-1].row*15-5;
-                            var preCol = 40+data[i-1].column*8;
+                            var preRow = data[i-1].row*rowHeight-(1/3)*rowHeight;
+                            var preCol = initSpace + data[i-1].column * colWidth;
                             var PI = Math.PI;
                             var angle = 60;
                             var xAngle = Math.atan2((col-preCol), (row-preRow));
