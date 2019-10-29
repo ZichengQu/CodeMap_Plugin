@@ -46,46 +46,56 @@
                 }
                 
                 function canvasInit(data){
-                    console.log(data);
-                    
+
                     var canvas = document.getElementById("Sketchpad");
                     canvas.width = window.innerWidth;
                     canvas.height = $("#code")[0].offsetHeight;
             
-                    var ctx = canvas.getContext("2d");
-                    ctx.beginPath();
-                    ctx.moveTo(70,55);
-                    ctx.quadraticCurveTo(0,1250,80,2585);
-                    ctx.strokeStyle="red";
-                    ctx.stroke();
-            
-                    $("#Sketchpad").mousedown(function (e) {
+                    var line = canvas.getContext("2d");
+                    line.beginPath();
+                    line.lineWidth = 1;//the width of the line
+                    line.strokeStyle = "red";//the color of the line
+
+                    var isFirst = true;
+
+                    for(var i=1;i<data.length;i++){
+                        var row = data[i].row;
+                        var col = data[i].column;
+                        var pageRow = row*15-5;
+                        var pageCol = 40+col*8;
                         
-                        console.log($("#Sketchpad"));
-                        var line = canvas.getContext("2d");
-                        line.lineWidth = 1;//the width of the line
-                        line.strokeStyle = "red";//the color of the line
-            
-                        var startXPos = e.pageX - this.offsetLeft;
-                        var startYPos = e.pageY - this.offsetTop;
-                        var endXPos = this.offsetLeft;
-                        var endYPos = this.offsetTop;
-            
-                        var PI = Math.PI;
-                        var angle = 60;
-                        var xAngle = Math.atan2((startYPos/2-endYPos/2), (startXPos/2-endXPos/2));
-                        xAngle = 360*xAngle/(2*PI);
-                        var L = Math.sqrt((startYPos-endYPos)*(startYPos-endYPos)+(startXPos/2-endXPos/2)*(startXPos/2-endXPos/2));
-                        var L2 = L/2 / Math.cos(angle* 2*PI/360);
-                        CPX1 = startYPos+Math.round(L2 * Math.cos((xAngle+angle)* 2*PI/360));
-                        CPY1 = endYPos+Math.round(L2 * Math.sin((xAngle+angle)* 2*PI/360));
-            
-                        line.quadraticCurveTo(CPX1,CPY1,startXPos,startYPos);
-                        line.stroke();
-            
-                    });
+                        console.log("Row = "+row+", Col = "+col);
+                        if(row==-1){
+                            line.closePath();
+                            isFirst = true;
+                            line.beginPath();
+                            continue;
+                        }
+                        if(isFirst){
+                            line.moveTo(pageCol,pageRow);
+                            isFirst = false;
+                        }else{
+                            var preRow = data[i-1].row*15-5;
+                            var preCol = 40+data[i-1].column*8;
+                            var PI = Math.PI;
+                            var angle = 60;
+                            var xAngle = Math.atan2((col-preCol), (row-preRow));
+                            xAngle = 360*xAngle/(2*PI);
+                            var L = Math.sqrt((col-preCol)*(col-preCol)+(row-preRow)*(row-preRow));
+                            var L2 = L/2 / Math.cos(angle* 2*PI/360);
+                            CPX1 = col+Math.round(L2 * Math.cos((xAngle+angle)* 2*PI/360));
+                            CPY1 = preCol+Math.round(L2 * Math.sin((xAngle+angle)* 2*PI/360));
+                            line.quadraticCurveTo(pageCol-30,pageRow-30,pageCol,pageRow);
+                            line.stroke();
+
+                            //line.lineTo(pageCol,pageRow);
+                            //line.stroke();
+                        }
+                        line.closePath();
+                        line.beginPath();
+                        line.moveTo(pageCol,pageRow);
+                    }
                 }
-            
             </script>
 	</head>
 	<body>
